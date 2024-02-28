@@ -1,26 +1,43 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <LoaderScreen v-if="isLoading" />
+  <SearchBar />
+  <RouterView v-slot="{ Component, route }">
+    <Component :is="Component" :key="route.fullPath" />
+  </RouterView>
 </template>
 
-<script>
-import HelloWorld from './components/HelloWorld.vue'
+<script setup>
+import LoaderScreen from "./components/LoaderScreen.vue";
+import SearchBar from "./components/SearchBar.vue";
+import { useStore } from "./store/index.js";
+import { computed } from "vue";
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+const store = useStore();
+
+const isLoading = computed(() => store.isLoading);
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+body {
+  background-color: black;
+  font-family: Arial, Helvetica, sans-serif;
+}
+button {
+  background-color: rgb(0, 158, 206);
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  button {
+    padding: 5px 10px;
+    font-size: 0.8em;
+  }
 }
 </style>
